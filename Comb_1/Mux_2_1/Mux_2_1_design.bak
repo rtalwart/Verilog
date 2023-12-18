@@ -1,0 +1,38 @@
+//Gate level abstraction implementation
+module mux21_gl(y,a,b,sel);
+
+input a,b,sel;
+output y;
+wire w1,w2;
+
+and a1(w1,sel,a);
+and a2(w2,~sel,b);
+or b1(y,w1,w2);
+
+endmodule
+
+//Data_flow level abstraction implementation
+module mux21_dl(y,a,b,sel);
+
+input a,b,sel;
+output y;
+
+assign y=(sel*a)+(~sel*b);
+
+endmodule
+
+//Behavioral level abstraction implementation
+module mux21_bhvl(y,a,b,sel);
+
+input a,b,sel;
+output y;
+
+always@(sel)begin
+	case(sel)
+		1'b0:y=a;
+		1'b1:y=b;
+		default:y=1'bz;
+	endcase
+	end
+
+endmodule

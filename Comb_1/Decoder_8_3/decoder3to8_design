@@ -1,0 +1,61 @@
+//data_flow level abstraction implementation
+module decoder_df(i,y,g);
+
+input [2:0]i,g;
+output [7:0]y;
+
+assign y[0]=~i[0]*~i[1]*~i[2]*~g;
+assign y[1]=~i[0]*~i[1]*i[2]*~g;
+assign y[2]=~i[0]*i[1]*~i[2]*~g;
+assign y[3]=~i[0]*i[1]*i[2]*~g;
+assign y[4]=i[0]*~i[1]*~i[2]*~g;
+assign y[5]=i[0]*~i[1]*i[2]*~g;
+assign y[6]=i[0]*i[1]*~i[2]*~g;
+assign y[7]=i[0]*i[1]*i[2]*~g;
+
+endmodule
+
+//gate level abstraction implementation
+module decoder_gl(i,y,g);
+
+input [2:0]i,g;
+output [7:0]y;
+
+and a1(y[0],~i[0],~i[1],~i[2],~g);
+and a2(y[1],~i[0],~i[1],i[2],~g);
+and a3(y[2],~i[0],i[1],~i[2],~g);
+and a4(y[3],~i[0],i[1],i[2],~g);
+and a5(y[4],i[0],~i[1],~i[2],~g);
+and a6(y[5],i[0],~i[1],i[2],~g);
+and a7(y[6],i[0],i[1],~i[2],~g);
+and a8(y[7],i[0],i[1],i[2],~g);
+
+endmodule
+
+//Behavioral level abstraction implementation
+
+module decoder_bhvl(i,y,g);
+
+input [2:0]i,g;
+output reg [7:0]y;
+
+always@(*)begin
+	if (g==0)begin
+		y=8'bz;
+		end
+	else begin
+		case(i)
+		3'b000:y=8'b00000001;
+		3'b001:y=8'b00000010;
+		3'b010:y=8'b00000100;
+		3'b011:y=8'b00001000;
+		3'b100:y=8'b00010000;
+		3'b101:y=8'b00100000;
+		3'b110:y=8'b01000000;
+		3'b111:y=8'b10000000;
+		default:y=8'bz;
+		endcase
+		end
+
+end
+endmodule

@@ -32,9 +32,7 @@ output reg carry,sum;
 
 always@(a,b,cin)begin
 	case({a,b,cin})
-		3'b000:begin
-			sum=0;carry=0;
-			end
+		3'b000:sum=0;carry=0;
 		(3'b001 | 3'b010 | 3'b100):begin
 			sum=1;carry=0;
 			end

@@ -1,0 +1,44 @@
+//dataflow level abstraction implementation
+module encoder_df(y,i);
+
+input [3:0]i;
+output[1:0]y;
+
+assign y[0]=~i[0]*i[1]*~i[2]*~i[3];
+assign y[1]=~i[0]*~i[1]*i[2]*~i[3]+~i[0]*~i[1]*~i[2]*i[3];
+
+endmodule
+
+//gate level abstraction implementation
+module encoder_gl(y,i);
+
+input [3:0]i;
+output[1:0]y;
+wire [1:0]w;
+
+and a1(y[0],~i[0],i[1],~i[2],~i[3]);
+and a2(w[0],~i[0],~i[1],i[2],~i[3]);
+and a3(w[1],~i[0],~i[1],~i[2],i[3]);
+or b1(y[1],w[0],w[1]);
+
+endmodule
+
+//Behavioral level abstraction implementation
+module encoder_df(y,i);
+
+input [3:0]i;
+output reg[1:0]y;
+
+always@(*)begin
+	case(i)
+		4'b0000:y=2'b00;
+		4'b0010:y=2'b01;
+		4'b0100:y=2'b10;
+		4'b1000:y=2'b11;
+		default:y=2'bz;
+
+	endcase
+		
+end
+endmodule
+

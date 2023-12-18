@@ -1,0 +1,43 @@
+//data_flow level abstraction implementation
+module demux_df(y,i,s);
+
+input [1:0]s,i;
+output [3:0]y;
+
+assign y[0]=~s[0]*~s[1]*i;
+assign y[1]=~s[0]*s[1]*i;
+assign y[2]=s[0]*~s[1]*i;
+assign y[3]=s[0]*s[1]*i;
+
+endmodule
+
+//gate level abstraction implementation
+module demux_gl(y,i,s);
+
+input [1:0]s,i;
+output [3:0]y;
+
+and a1(y[0],~s[0],~s[1],i);
+and a2(y[1],~s[0],s[1],i);
+and a3(y[2],s[0],~s[1],i);
+and a4(y[3],s[0],s[1],i);
+
+endmodule
+
+//Behavioral level abstraction implementation
+
+module demux_gl(y,i,s);
+
+input [1:0]s,i;
+output reg [3:0]y;
+
+always@(*)begin
+	case(s)
+		2'b00:y[0]=i;
+		2'b01:y[1]=i;
+		2'b10:y[2]=i;
+		2'b11:y[3]=i;
+		default:y[3:0]=3'bz;
+	endcase
+end
+endmodule
